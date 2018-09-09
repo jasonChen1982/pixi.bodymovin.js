@@ -1,0 +1,55 @@
+{
+  "name": "pixi.bodymovin",
+  "version": "0.0.0",
+  "description": "",
+  "main": "./build/index.js",
+  "scripts": {
+    "extract": "npmsrcify extract",
+    "build": "rollup -c",
+    "build:dev": "rollup -c -w",
+    "prever": "npm run build && git add -A && git commit -m 'release: release a new version'",
+    "ver": "standard-version -m 'chore(release): v%s'",
+    "postver": "git push --follow-tags origin master && npm publish",
+    "docs": "jsdoc -c jsdoc.conf.json -R README.md",
+    "lint": "eslint .",
+    "fix": "eslint --fix ./src",
+    "http": "hs -o",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonChen1982/pixi.bodymovin.js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonChen1982/pixi.bodymovin.js/issues"
+  },
+  "homepage": "https://github.com/jasonChen1982/pixi.bodymovin.js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.10.0",
+    "http-server": "^0.11.1",
+    "npmsrcify": "0.0.2",
+    "rollup": "^0.64.1",
+    "rollup-plugin-babel": "^4.0.3",
+    "standard-version": "^4.3.0"
+  },
+  "peerDependencies": {
+    "pixi.js": "^4.8.2"
+  },
+  "config": {
+    "npmsrcify": {
+      "modules": [
+        "pixi.js"
+      ],
+      "output": "./examples/libs"
+    }
+  }
+}
