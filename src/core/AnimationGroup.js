@@ -7,21 +7,21 @@ import KeyframesBuffer from './KeyframesBuffer';
 import { getEaseing, getEaseingPath } from '../utils/Easeing';
 
 /**
- * 判断数值是否在(min, max]区间内
- * @param {number} v   待比较的值
- * @param {number} min 最小区间
- * @param {number} max 最大区间
- * @return {boolean} 是否在(min, max]区间内
+ * detect number was in (min, max]
+ * @param {number} v   value
+ * @param {number} min lower
+ * @param {number} max upper
+ * @return {boolean} in (min, max] range ?
  */
 function inRange(v, min, max) {
   return v > min && v <= max;
 }
 
 /**
- * 判断当前进度在哪一帧内
- * @param {array} steps 帧数组
- * @param {number} progress 当前进度
- * @return {number} 当前进度停留在第几帧
+ * detect current frame index
+ * @param {array} steps frames array
+ * @param {number} progress current time
+ * @return {number} which frame index
  */
 function findStep(steps, progress) {
   const last = steps.length - 1;
@@ -34,12 +34,20 @@ function findStep(steps, progress) {
 }
 
 /**
- * an animation parser
+ * an animation group, store and compute frame information
  */
 export default class AnimationGroup {
   /**
    * pass a data and extra config
    * @param {object} options config and data
+   * @param {Object} options.keyframes bodymovin data, which export from AE
+   * @param {Number} [options.repeats=0] need repeat somt times?
+   * @param {Boolean} [options.infinite=false] play this animation round and round forever
+   * @param {Boolean} [options.alternate=false] alternate direction every round
+   * @param {Number} [options.wait=0] need wait how much time to start
+   * @param {Number} [options.delay=0] need delay how much time to begin, effect every round
+   * @param {String} [options.prefix=''] assets url prefix, like link path
+   * @param {Number} [options.timeScale=1] animation speed
    */
   constructor(options) {
     this.prefix = options.prefix || '';
@@ -78,11 +86,11 @@ export default class AnimationGroup {
 
   /**
    * create a sprite
+   * @private
    * @param {object} layerData layer data
    * @return {Sprite}
    */
   createSprite(layerData) {
-    // this.getAssets();
     const asset = this.getAssets(layerData.refId);
     const up = asset.u + asset.p;
     const url = asset.up || up;
@@ -91,9 +99,10 @@ export default class AnimationGroup {
   }
 
   /**
-   * create a sprite
+   * create a container
+   * @private
    * @param {object} layerData layer data
-   * @return {Sprite}
+   * @return {Container}
    */
   createDoc(layerData) {
     const doc = new Container();
@@ -101,10 +110,10 @@ export default class AnimationGroup {
   }
 
   /**
-   * 初始化合成组内的图层
+   * init all layers in this composition
    * @private
-   * @param {array} layersData 图层数组
-   * @return {object} 该图层的所有渲染对象
+   * @param {array} layersData layers data
+   * @return {object} all display object which inited with layer data
    */
   initLayers(layersData) {
     const layersMap = {};
@@ -131,10 +140,10 @@ export default class AnimationGroup {
   }
 
   /**
-   * 解析合成组
+   * parser composition data
    * @private
-   * @param {Container} doc 动画元素的渲染组
-   * @param {array} layersData 预合成数组
+   * @param {Container} doc root display object container
+   * @param {array} layersData composition data
    */
   parserComposition(doc, layersData) {
     const layersMap = this.initLayers(layersData);
@@ -156,9 +165,10 @@ export default class AnimationGroup {
 
 
   /**
+   * get assets from keyframes assets
    * @private
-   * @param {string} id 资源的refid
-   * @return {object} 资源配置
+   * @param {string} id assets refid
+   * @return {object} asset object
    */
   getAssets(id) {
     const assets = this.keyframes.assets;
@@ -168,7 +178,7 @@ export default class AnimationGroup {
   }
 
   /**
-   * snippet
+   * update with time snippet
    * @param {number} snippetCache snippet
    */
   update(snippetCache) {
@@ -177,7 +187,7 @@ export default class AnimationGroup {
   }
 
   /**
-   * snippet
+   * update timeline with time snippet
    * @param {number} snippet snippet
    */
   updateTime(snippet) {
@@ -211,7 +221,7 @@ export default class AnimationGroup {
   }
 
   /**
-   * a
+   * is this time progress spill the range
    * @return {boolean}
    */
   spill() {
@@ -221,9 +231,9 @@ export default class AnimationGroup {
   }
 
   /**
-   * 计算下一帧状态
+   * update all children transform
    * @private
-   * @param {array} group a
+   * @param {array} group doc
    */
   updateTransform(group) {
     const length = group.children.length;
@@ -237,9 +247,9 @@ export default class AnimationGroup {
   }
 
   /**
-   * 计算下一帧状态
+   * compute child transform props
    * @private
-   * @param {Container} doc a
+   * @param {Container} doc display object container
    * @return {object}
    */
   computeChildProps(doc) {
@@ -255,14 +265,14 @@ export default class AnimationGroup {
   }
 
   /**
-   * 预计算关键帧属性值
+   * compute value with keyframes buffer
    * @private
-   * @param {Container} doc 关键帧配置
-   * @param {Container} keyframesBuffer 关键帧配置
-   * @param {string} key 关键帧配置
+   * @param {Container} doc display object container
+   * @param {Container} keyframesBuffer keyframes buffer status
+   * @param {string} key which prop
    * @return {array}
    */
-  interpolation(doc, keyframesBuffer, key) {// kic
+  interpolation(doc, keyframesBuffer, key) {
     const ak = keyframesBuffer.aks[key];
     const akk = ak.k;
     const progress = Utils.clamp(this.progress, 0, ak.jcet);

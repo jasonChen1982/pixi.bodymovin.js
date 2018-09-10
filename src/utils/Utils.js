@@ -9,8 +9,6 @@ function _rt(val) {
 
 /**
  * Utils 引擎工具箱
- *
- * @namespace JC.Utils
  */
 const Utils = {
   /**

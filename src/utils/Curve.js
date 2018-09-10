@@ -1,7 +1,6 @@
 
 /**
  * @class
- * @memberof JC
  */
 function Curve() {}
 

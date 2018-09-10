@@ -3,16 +3,15 @@ import {
 } from 'pixi.js';
 import './patch/DisplayObject';
 import './patch/Point';
-// import KeyframesManager from './core/KeyframesManager';
 import AnimationGroup from './core/AnimationGroup';
 
 /**
- * all animation manager
+ * all animation manager, manage ticker and animation groups
  */
 class AnimationManager {
   /**
-   * animation manager
-   * @param {a} _ticker
+   * animation manager, optional a ticker param
+   * @param {Ticker} _ticker
    */
   constructor(_ticker) {
     /**
@@ -31,10 +30,23 @@ class AnimationManager {
      */
     this.snippet = 0;
 
+    /**
+     * time scale, just like speed scalar
+     *
+     * @member {Number}
+     * @private
+     */
     this.timeScale = 1;
+
+    /**
+     * ticker engine
+     */
     this.ticker = _ticker || new ticker.Ticker();
+
+    /**
+     * all animation groups
+     */
     this.groups = [];
-    // this.KSManager = new KeyframesManager();
 
     this.update = this.update.bind(this);
 
@@ -42,9 +54,9 @@ class AnimationManager {
   }
 
   /**
-   * a
-   * @param {a} child aa
-   * @return {a} a
+   * add a animationGroup child to array
+   * @param {AnimationGroup} child AnimationGroup instance
+   * @return {AnimationGroup} child
    */
   add(child) {
     const argumentsLength = arguments.length;
@@ -62,9 +74,17 @@ class AnimationManager {
   }
 
   /**
-   * aa
-   * @param {object} options aa
+   * parser a bodymovin data, and post some config for this animation group
+   * @param {object} options bodymovin data
    * @return {AnimationGroup}
+   * @example
+   * ```js
+   * var manager = new PIXI.AnimationManager(app.ticker);
+   * var ani = manager.parserAnimation({
+   *   keyframes: data,
+   *   infinite: true,
+   * });
+   * ```
    */
   parserAnimation(options) {
     const animate = new AnimationGroup(options);

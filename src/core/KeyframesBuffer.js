@@ -33,9 +33,8 @@ export default class KeyframesBuffer {
   }
 
   /**
-   * 预解析关键帧
+   * preparser keyframes
    * @private
-   * @param {object} keys 关键帧配置
    */
   preParser() {
     const ks = this.layer.ks;
@@ -49,9 +48,9 @@ export default class KeyframesBuffer {
   }
 
   /**
-   * 预解析动态属性的关键帧
+   * preparser dynamic keyframes
    * @private
-   * @param {string} key 所属的属性
+   * @param {string} key property
    */
   parserDynamic(key) {
     const ksp = this.layer.ks[key];
@@ -85,9 +84,9 @@ export default class KeyframesBuffer {
   }
 
   /**
-   * 预解析静态属性的关键帧
+   * preparser static keyframes
    * @private
-   * @param {string} key 所属的属性
+   * @param {string} key property
    */
   parserStatic(key) {
     const ksp = this.layer.ks[key];
@@ -98,10 +97,10 @@ export default class KeyframesBuffer {
   }
 
   /**
-   * 更新元素的属性值
+   * set value to host element
    * @private
-   * @param {string} key 属性
-   * @param {array} value 属性值
+   * @param {string} key property
+   * @param {array} value value array
    */
   setValue(key, value) {
     const props = PROPS_MAP[key].props;

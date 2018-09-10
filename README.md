@@ -1,59 +1,38 @@
-# three.interaction
+# pixi.bodymovin
 
-[![npm](https://img.shields.io/npm/v/three.interaction.svg?style=flat-square)](https://github.com/jasonChen1982/three.interaction.js)
+[![npm](https://img.shields.io/npm/v/pixi.bodymovin.svg?style=flat-square)](https://github.com/jasonChen1982/pixi.bodymovin.js)
 [![javascript style guide](https://img.shields.io/badge/code_style-google-brightgreen.svg)](https://google.github.io/styleguide/jsguide.html)
 [![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
 
-a full-interaction event manager, help `three.js` binding interaction event more simple
+a bodymovin animation data parser for `pixi.js`, seamless help `pixi.js` build AE transform animation
 
 # install
 
 ```sh
-npm install -S three.interaction
+npm install -S pixi.bodymovin
 ```
 
 # usage
 
 ```javascript
-import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, BoxGeometry, MeshBasicMaterial } from 'three';
-import { Interaction } from 'three.interaction';
+import { Application } from 'pixi.js';
+import { AnimationManager } from 'pixi.bodymovin';
+import data from './animations/data.js';
 
-const renderer = new WebGLRenderer({ canvas: canvasElement });
-const scene = new Scene();
-const camera = new PerspectiveCamera(60, width / height, 0.1, 100);
+const width = window.innerWidth;
+const height = window.innerHeight;
+const app = new Application(width, height, {backgroundColor : 0xffffff});
+document.body.appendChild(app.view);
 
-// new a interaction, then you can add interaction-event with your free style
-const interaction = new Interaction(renderer, scene, camera);
+const animationManager = new AnimationManager(app.ticker);
 
-const cube = new Mesh(
-  new BoxGeometry(1, 1, 1),
-  new MeshBasicMaterial({ color: 0xffffff }),
-);
-scene.add(cube);
-cube.cursor = 'pointer';
-cube.on('click', function(ev) {});
-cube.on('touchstart', function(ev) {});
-cube.on('touchcancel', function(ev) {});
-cube.on('touchmove', function(ev) {});
-cube.on('touchend', function(ev) {});
-cube.on('mousedown', function(ev) {});
-cube.on('mouseout', function(ev) {});
-cube.on('mouseover', function(ev) {});
-cube.on('mousemove', function(ev) {});
-cube.on('mouseup', function(ev) {});
-// and so on ...
+const anim = manager.parserAnimation({
+  keyframes: data,
+  prefix: '',
+  infinite: true,
+});
 
-/**
- * you can also listen on parent-node or any display-tree node,
- * source event will bubble up along with display-tree.
- * you can stop the bubble-up by invoke ev.stopPropagation function.
- */
-scene.on('touchstart', ev => {
-  console.log(ev);
-})
-scene.on('touchmove', ev => {
-  console.log(ev);
-})
+app.stage.addChild(anim.group);
 
 ```
 
@@ -61,10 +40,14 @@ scene.on('touchmove', ev => {
 [documentation][documentation]
 
 ## Examples
-[examples cube][examples]
-[examples cube overlap][examples-overlap]
+- [examples luky][examples-luky]
+- [examples cloud][examples-cloud]
+- [examples gift][examples-gift]
+- [examples pop][examples-pop]
 
 
-[documentation]:https://jasonchen1982.github.io/three.interaction.js/docs/ "three.interaction documention page"
-[examples]:https://jasonchen1982.github.io/three.interaction.js/examples/interaction/ "three.interaction examples page"
-[examples-overlap]:https://jasonchen1982.github.io/three.interaction.js/examples/interaction-overlap/ "three.interaction examples page with overlap"
+[documentation]:https://jasonchen1982.github.io/pixi.bodymovin.js/docs/ "pixi.bodymovin documention page"
+[examples-luky]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-luky/ "pixi.bodymovin examples page of luky"
+[examples-cloud]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-cloud/ "pixi.bodymovin examples page of cloud"
+[examples-gift]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-gift/ "pixi.bodymovin examples page of gift"
+[examples-pop]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-pop/ "pixi.bodymovin examples page of pop"

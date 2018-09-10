@@ -2,6 +2,9 @@ import {
   DisplayObject,
 } from 'pixi.js';
 
+/**
+ * add some patch
+ */
 Object.defineProperties(DisplayObject.prototype, {
   /**
    * An alias to scale.x
