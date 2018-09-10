@@ -6,9 +6,8 @@ import {
 } from './Curve';
 
 /**
- * 贝塞尔曲线类 note: 一般来说超过5阶的贝塞尔曲线并不是非常实用，你可以尝试 JC 的其他曲线类型
+ * bezier curve class
  * @class
- * @memberof JC
  * @param {Array}  points  array of points
  */
 function BezierCurve( points ) {
@@ -17,6 +16,12 @@ function BezierCurve( points ) {
 
 BezierCurve.prototype = Object.create( Curve.prototype );
 
+/**
+ * get point by progress t
+ * @param {number} t number of in [0, 1]
+ * @param {array} points some point
+ * @return {Point}
+ */
 BezierCurve.prototype.getPoint = function(t, points) {
   const a = points || this.points;
   const len = a.length;

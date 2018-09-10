@@ -7,6 +7,15 @@ import AnimationGroup from './core/AnimationGroup';
 
 /**
  * all animation manager, manage ticker and animation groups
+   * @example
+   * ```js
+   * var manager = new PIXI.AnimationManager(app.ticker);
+   * var ani = manager.parserAnimation({
+   *   keyframes: data,
+   *   infinite: true,
+   * });
+   * ```
+ * @class
  */
 class AnimationManager {
   /**
@@ -34,17 +43,25 @@ class AnimationManager {
      * time scale, just like speed scalar
      *
      * @member {Number}
-     * @private
      */
     this.timeScale = 1;
 
     /**
+     * mark the manager was pause or not
+     *
+     * @member {Boolean}
+     */
+    this.paused = false;
+
+    /**
      * ticker engine
+     * @private
      */
     this.ticker = _ticker || new ticker.Ticker();
 
     /**
      * all animation groups
+     * @private
      */
     this.groups = [];
 
@@ -76,6 +93,14 @@ class AnimationManager {
   /**
    * parser a bodymovin data, and post some config for this animation group
    * @param {object} options bodymovin data
+   * @param {Object} options.keyframes bodymovin data, which export from AE
+   * @param {Number} [options.repeats=0] need repeat somt times?
+   * @param {Boolean} [options.infinite=false] play this animation round and round forever
+   * @param {Boolean} [options.alternate=false] alternate direction every round
+   * @param {Number} [options.wait=0] need wait how much time to start
+   * @param {Number} [options.delay=0] need delay how much time to begin, effect every round
+   * @param {String} [options.prefix=''] assets url prefix, like link path
+   * @param {Number} [options.timeScale=1] animation speed
    * @return {AnimationGroup}
    * @example
    * ```js
@@ -92,25 +117,57 @@ class AnimationManager {
   }
 
   /**
-   * a
+   * set animation speed, time scale
+   * @param {number} speed
+   */
+  setSpeed(speed) {
+    this.timeScale = speed;
+  }
+
+  /**
+   * start update loop
+   * @return {this}
    */
   start() {
     this.pt = Date.now();
     this.ticker.add(this.update);
+    return this;
   }
 
   /**
-   * a
+   * stop update loop
+   * @return {this}
    */
   stop() {
     this.ticker.remove(this.update);
+    return this;
+  }
+
+  /**
+   * pause all animation groups
+   * @return {this}
+   */
+  pause() {
+    this.paused = true;
+    return this;
+  }
+
+  /**
+   * pause all animation groups
+   * @return {this}
+   */
+  resume() {
+    this.paused = false;
+    return this;
   }
 
   /**
    * update
+   * @private
    */
   update() {
     this.timeline();
+    if (this.paused) return;
     const snippetCache = this.timeScale * this.snippet;
     const length = this.groups.length;
     for (let i = 0; i < length; i++) {

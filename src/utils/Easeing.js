@@ -3,12 +3,12 @@ import { BezierEasing } from './BezierEasing';
 const bezierPool = {};
 
 /**
- * 准备好贝塞尔曲线
- * @param {number} mX1 控制点1的x分量
- * @param {number} mY1 控制点1的y分量
- * @param {number} mX2 控制点2的x分量
- * @param {number} mY2 控制点2的y分量
- * @param {string} nm 控制点命名
+ * create a bezier curve by control point, and push it to cache
+ * @param {number} mX1 control p1 component-x
+ * @param {number} mY1 control p1 component-y
+ * @param {number} mX2 control p2 component-x
+ * @param {number} mY2 control p3 component-y
+ * @param {string} nm curve name
  * @return {BezierEasing}
  */
 function prepareEaseing(mX1, mY1, mX2, mY2, nm) {
@@ -21,11 +21,11 @@ function prepareEaseing(mX1, mY1, mX2, mY2, nm) {
 }
 
 /**
- * 根据进度获取到普通插值
- * @param {number} s  插值起始端点
- * @param {number} e  插值结束端点
- * @param {array}  nm 贝塞尔曲线的名字
- * @param {number} p  插值进度
+ * get easeing value by curve name and progress
+ * @param {number} s  lerp begin value
+ * @param {number} e  lerp end value
+ * @param {array}  nm curve name
+ * @param {number} p  progress
  * @return {array}
  */
 function getEaseing(s, e, nm, p) {

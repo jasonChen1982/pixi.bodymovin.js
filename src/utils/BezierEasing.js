@@ -18,56 +18,57 @@ let float32ArraySupported = typeof Float32Array === 'function';
 /* eslint new-cap: 0 */
 
 /**
- * 公因式A
+ * common factor A
  *
- * @param {number} aA1 控制分量
- * @param {number} aA2 控制分量
- * @return {number} 整个公式中的A公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor A computed result
  */
 function A(aA1, aA2) {
   return 1.0 - 3.0 * aA2 + 3.0 * aA1;
 }
 
 /**
- * 公因式B
+ * common factor B
  *
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 整个公式中的B公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor B computed result
  */
 function B(aA1, aA2) {
   return 3.0 * aA2 - 6.0 * aA1;
 }
 
 /**
- * 公因式C
+ * common factor C
  *
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 整个公式中的C公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor C computed result
  */
 function C(aA1) {
   return 3.0 * aA1;
 }
 
 /**
- * 获取aT处的值
+ * get value when t at aT
  *
- * @param {number} aT 三次贝塞尔曲线的t自变量
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 三次贝塞尔公式的因变量
+ * @param {number} aT progress t
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} bezier curve computed result
  */
 function calcBezier(aT, aA1, aA2) {
   return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
 }
 
 /**
- * 获取aT处的斜率
- * @param {number} aT 三次贝塞尔曲线的t自变量
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 三次贝塞尔公式的导数
+ * get slope value when t at aT
+ *
+ * @param {number} aT progress t
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} bezier curve's slope computed result
  */
 function getSlope(aT, aA1, aA2) {
   return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
@@ -80,7 +81,7 @@ function getSlope(aT, aA1, aA2) {
  * @param {number} aB
  * @param {number} mX1
  * @param {number} mX2
- * @return {number} 二分法猜测t的值
+ * @return {number} binary-subdivide search
  */
 function binarySubdivide(aX, aA, aB, mX1, mX2) {
   let currentX;
@@ -103,12 +104,12 @@ function binarySubdivide(aX, aA, aB, mX1, mX2) {
 }
 
 /**
- * 牛顿迭代算法，进一步的获取精确的T值
+ * Newton-Raphson iterate to estimate value faster
  * @param {number} aX
  * @param {number} aGuessT
  * @param {number} mX1
  * @param {number} mX2
- * @return {number} 获取更精确的T值
+ * @return {number} estimate value
  */
 function newtonRaphsonIterate(aX, aGuessT, mX1, mX2) {
   for (let i = 0; i < NEWTON_ITERATIONS; ++i) {
@@ -123,14 +124,14 @@ function newtonRaphsonIterate(aX, aGuessT, mX1, mX2) {
 }
 
 /**
- * cubic-bezier曲线的两个控制点，默认起始点为 0，结束点为 1
+ * use cubic-bezier get bezier-easing, when start p0(0, 0) and end p3(1, 1)
  *
  * @class
  * @memberof JC
- * @param {number} mX1 控制点1的x分量
- * @param {number} mY1 控制点1的y分量
- * @param {number} mX2 控制点2的x分量
- * @param {number} mY2 控制点2的y分量
+ * @param {number} mX1 control p1 component-x
+ * @param {number} mY1 control p1 component-y
+ * @param {number} mX2 control p2 component-x
+ * @param {number} mY2 control p3 component-y
  */
 function BezierEasing(mX1, mY1, mX2, mY2) {
   if (!(0 <= mX1 && mX1 <= 1 && 0 <= mX2 && mX2 <= 1)) {
@@ -196,10 +197,10 @@ BezierEasing.prototype._getTForX = function(aX) {
 };
 
 /**
- * 通过x轴近似获取y的值
+ * get the y value from give x
  *
- * @param {number} x x轴的偏移量
- * @return {number} y 与输入值x对应的y值
+ * @param {number} x the x value
+ * @return {number} y estimate y value
  */
 BezierEasing.prototype.get = function(x) {
   if (this.mX1 === this.mY1 && this.mX2 === this.mY2) return x;

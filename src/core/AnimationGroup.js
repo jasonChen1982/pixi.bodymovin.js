@@ -78,6 +78,7 @@ export default class AnimationGroup {
     this.delayCut = this.delay;
     this.waitCut = this.wait;
 
+    this.paused = false;
 
     this.group = new Container();
 
@@ -302,5 +303,31 @@ export default class AnimationGroup {
         return getEaseing(frame.s, frame.e, frame.n, rate);
       }
     }
+  }
+
+  /**
+   * set animation speed, time scale
+   * @param {number} speed
+   */
+  setSpeed(speed) {
+    this.timeScale = speed;
+  }
+
+  /**
+   * pause this animation group
+   * @return {this}
+   */
+  pause() {
+    this.paused = true;
+    return this;
+  }
+
+  /**
+   * pause this animation group
+   * @return {this}
+   */
+  resume() {
+    this.paused = false;
+    return this;
   }
 }
