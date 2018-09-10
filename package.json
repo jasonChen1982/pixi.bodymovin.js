@@ -16,6 +16,13 @@
     "http": "hs -o",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "CHANGELOG.md",
+    "README.md",
+    "build",
+    "esm",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jasonChen1982/pixi.bodymovin.js.git"
