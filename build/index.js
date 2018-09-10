@@ -26,6 +26,10 @@
     return Constructor;
   }
 
+  /**
+   * add some patch
+   */
+
   Object.defineProperties(pixi_js.DisplayObject.prototype, {
     /**
      * An alias to scale.x
@@ -80,9 +84,21 @@
     }
   });
 
+  /**
+   * get a distance to point-v
+   * @param {Point} v target point
+   * @return {number} distance
+   */
+
   pixi_js.Point.prototype.distanceTo = function (v) {
     return Math.sqrt(this.distanceToSquared(v));
   };
+  /**
+   * get a distance squared to point-v
+   * @param {Point} v target point
+   * @return {number} distance squared
+   */
+
 
   pixi_js.Point.prototype.distanceToSquared = function (v) {
     var dx = this.x - v.x;
@@ -100,8 +116,6 @@
   }
   /**
    * Utils 引擎工具箱
-   *
-   * @namespace JC.Utils
    */
 
 
@@ -393,7 +407,6 @@
 
   /**
    * @class
-   * @memberof JC
    */
   function Curve() {}
 
@@ -849,9 +862,8 @@
       this.preParser();
     }
     /**
-     * 预解析关键帧
+     * preparser keyframes
      * @private
-     * @param {object} keys 关键帧配置
      */
 
 
@@ -869,9 +881,9 @@
         }
       }
       /**
-       * 预解析动态属性的关键帧
+       * preparser dynamic keyframes
        * @private
-       * @param {string} key 所属的属性
+       * @param {string} key property
        */
 
     }, {
@@ -908,9 +920,9 @@
         this.aks[key] = ksp;
       }
       /**
-       * 预解析静态属性的关键帧
+       * preparser static keyframes
        * @private
-       * @param {string} key 所属的属性
+       * @param {string} key property
        */
 
     }, {
@@ -922,10 +934,10 @@
         this.setValue(key, kspk);
       }
       /**
-       * 更新元素的属性值
+       * set value to host element
        * @private
-       * @param {string} key 属性
-       * @param {array} value 属性值
+       * @param {string} key property
+       * @param {array} value value array
        */
 
     }, {
@@ -945,21 +957,21 @@
   }();
 
   /**
-   * 判断数值是否在(min, max]区间内
-   * @param {number} v   待比较的值
-   * @param {number} min 最小区间
-   * @param {number} max 最大区间
-   * @return {boolean} 是否在(min, max]区间内
+   * detect number was in (min, max]
+   * @param {number} v   value
+   * @param {number} min lower
+   * @param {number} max upper
+   * @return {boolean} in (min, max] range ?
    */
 
   function inRange(v, min, max) {
     return v > min && v <= max;
   }
   /**
-   * 判断当前进度在哪一帧内
-   * @param {array} steps 帧数组
-   * @param {number} progress 当前进度
-   * @return {number} 当前进度停留在第几帧
+   * detect current frame index
+   * @param {array} steps frames array
+   * @param {number} progress current time
+   * @return {number} which frame index
    */
 
 
@@ -975,7 +987,7 @@
     }
   }
   /**
-   * an animation parser
+   * an animation group, store and compute frame information
    */
 
 
@@ -985,6 +997,14 @@
     /**
      * pass a data and extra config
      * @param {object} options config and data
+     * @param {Object} options.keyframes bodymovin data, which export from AE
+     * @param {Number} [options.repeats=0] need repeat somt times?
+     * @param {Boolean} [options.infinite=false] play this animation round and round forever
+     * @param {Boolean} [options.alternate=false] alternate direction every round
+     * @param {Number} [options.wait=0] need wait how much time to start
+     * @param {Number} [options.delay=0] need delay how much time to begin, effect every round
+     * @param {String} [options.prefix=''] assets url prefix, like link path
+     * @param {Number} [options.timeScale=1] animation speed
      */
     function AnimationGroup(options) {
       _classCallCheck(this, AnimationGroup);
@@ -1015,6 +1035,7 @@
     }
     /**
      * create a sprite
+     * @private
      * @param {object} layerData layer data
      * @return {Sprite}
      */
@@ -1023,7 +1044,6 @@
     _createClass(AnimationGroup, [{
       key: "createSprite",
       value: function createSprite(layerData) {
-        // this.getAssets();
         var asset = this.getAssets(layerData.refId);
         var up = asset.u + asset.p;
         var url = asset.up || up;
@@ -1031,9 +1051,10 @@
         return sprite;
       }
       /**
-       * create a sprite
+       * create a container
+       * @private
        * @param {object} layerData layer data
-       * @return {Sprite}
+       * @return {Container}
        */
 
     }, {
@@ -1043,10 +1064,10 @@
         return doc;
       }
       /**
-       * 初始化合成组内的图层
+       * init all layers in this composition
        * @private
-       * @param {array} layersData 图层数组
-       * @return {object} 该图层的所有渲染对象
+       * @param {array} layersData layers data
+       * @return {object} all display object which inited with layer data
        */
 
     }, {
@@ -1078,10 +1099,10 @@
         return layersMap;
       }
       /**
-       * 解析合成组
+       * parser composition data
        * @private
-       * @param {Container} doc 动画元素的渲染组
-       * @param {array} layersData 预合成数组
+       * @param {Container} doc root display object container
+       * @param {array} layersData composition data
        */
 
     }, {
@@ -1107,9 +1128,10 @@
         }
       }
       /**
+       * get assets from keyframes assets
        * @private
-       * @param {string} id 资源的refid
-       * @return {object} 资源配置
+       * @param {string} id assets refid
+       * @return {object} asset object
        */
 
     }, {
@@ -1122,7 +1144,7 @@
         }
       }
       /**
-       * snippet
+       * update with time snippet
        * @param {number} snippetCache snippet
        */
 
@@ -1133,7 +1155,7 @@
         this.updateTransform(this.group);
       }
       /**
-       * snippet
+       * update timeline with time snippet
        * @param {number} snippet snippet
        */
 
@@ -1172,7 +1194,7 @@
         }
       }
       /**
-       * a
+       * is this time progress spill the range
        * @return {boolean}
        */
 
@@ -1184,9 +1206,9 @@
         return bottomSpill || topSpill;
       }
       /**
-       * 计算下一帧状态
+       * update all children transform
        * @private
-       * @param {array} group a
+       * @param {array} group doc
        */
 
     }, {
@@ -1205,9 +1227,9 @@
         }
       }
       /**
-       * 计算下一帧状态
+       * compute child transform props
        * @private
-       * @param {Container} doc a
+       * @param {Container} doc display object container
        * @return {object}
        */
 
@@ -1227,18 +1249,17 @@
         return pose;
       }
       /**
-       * 预计算关键帧属性值
+       * compute value with keyframes buffer
        * @private
-       * @param {Container} doc 关键帧配置
-       * @param {Container} keyframesBuffer 关键帧配置
-       * @param {string} key 关键帧配置
+       * @param {Container} doc display object container
+       * @param {Container} keyframesBuffer keyframes buffer status
+       * @param {string} key which prop
        * @return {array}
        */
 
     }, {
       key: "interpolation",
       value: function interpolation(doc, keyframesBuffer, key) {
-        // kic
         var ak = keyframesBuffer.aks[key];
         var akk = ak.k;
         var progress = Utils.clamp(this.progress, 0, ak.jcet);
@@ -1275,15 +1296,15 @@
   }();
 
   /**
-   * all animation manager
+   * all animation manager, manage ticker and animation groups
    */
 
   var AnimationManager =
   /*#__PURE__*/
   function () {
     /**
-     * animation manager
-     * @param {a} _ticker
+     * animation manager, optional a ticker param
+     * @param {Ticker} _ticker
      */
     function AnimationManager(_ticker) {
       _classCallCheck(this, AnimationManager);
@@ -1303,17 +1324,31 @@
        */
 
       this.snippet = 0;
-      this.timeScale = 1;
-      this.ticker = _ticker || new pixi_js.ticker.Ticker();
-      this.groups = []; // this.KSManager = new KeyframesManager();
+      /**
+       * time scale, just like speed scalar
+       *
+       * @member {Number}
+       * @private
+       */
 
+      this.timeScale = 1;
+      /**
+       * ticker engine
+       */
+
+      this.ticker = _ticker || new pixi_js.ticker.Ticker();
+      /**
+       * all animation groups
+       */
+
+      this.groups = [];
       this.update = this.update.bind(this);
       this.start();
     }
     /**
-     * a
-     * @param {a} child aa
-     * @return {a} a
+     * add a animationGroup child to array
+     * @param {AnimationGroup} child AnimationGroup instance
+     * @return {AnimationGroup} child
      */
 
 
@@ -1334,9 +1369,17 @@
         return child;
       }
       /**
-       * aa
-       * @param {object} options aa
+       * parser a bodymovin data, and post some config for this animation group
+       * @param {object} options bodymovin data
        * @return {AnimationGroup}
+       * @example
+       * ```js
+       * var manager = new PIXI.AnimationManager(app.ticker);
+       * var ani = manager.parserAnimation({
+       *   keyframes: data,
+       *   infinite: true,
+       * });
+       * ```
        */
 
     }, {
