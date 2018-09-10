@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.0"></a>
+# 0.0.0 (2018-09-10)
+
+
+### Features
+
+* **init:** finish init project ([881e18b](https://github.com/jasonChen1982/pixi.bodymovin.js/commit/881e18b))
+
+
+
 <a name="0.2.2"></a>
 ## [0.2.2](https://github.com/jasonChen1982/three.interaction.js/compare/v0.2.1...v0.2.2) (2018-09-06)
 
