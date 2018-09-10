@@ -40,14 +40,14 @@ app.stage.addChild(anim.group);
 [documentation][documentation]
 
 ## Examples
-- [examples luky][examples-luky]
+- [examples lucky][examples-lucky]
 - [examples cloud][examples-cloud]
 - [examples gift][examples-gift]
 - [examples pop][examples-pop]
 
 
 [documentation]:https://jasonchen1982.github.io/pixi.bodymovin.js/docs/ "pixi.bodymovin documention page"
-[examples-luky]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-luky/ "pixi.bodymovin examples page of luky"
+[examples-lucky]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-lucky/ "pixi.bodymovin examples page of lucky"
 [examples-cloud]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-cloud/ "pixi.bodymovin examples page of cloud"
 [examples-gift]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-gift/ "pixi.bodymovin examples page of gift"
 [examples-pop]:https://jasonchen1982.github.io/pixi.bodymovin.js/examples/ae-pop/ "pixi.bodymovin examples page of pop"
