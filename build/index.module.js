@@ -103,57 +103,39 @@ Point.prototype.distanceToSquared = function (v) {
 };
 
 /**
- * 返回数据类型
+ * get the type by Object.prototype.toString
  * @param {*} val
- * @return {String} 数据类型
+ * @return {String} type string value
  */
 function _rt(val) {
   return Object.prototype.toString.call(val);
 }
 /**
- * Utils 引擎工具箱
+ * some useful toolkit
  */
 
 
 var Utils = {
   /**
-   * 简单拷贝纯数据的JSON对象
+   * simple copy a json data
    *
    * @static
    * @memberof JC.Utils
-   * @param {JSON} json 待拷贝的纯数据JSON
-   * @return {JSON} 拷贝后的纯数据JSON
+   * @param {JSON} json source data
+   * @return {JSON} object
    */
   copyJSON: function copyJSON(json) {
     return JSON.parse(JSON.stringify(json));
   },
 
   /**
-   * 将角度转化成弧度的乘法因子
-   *
-   * @static
-   * @memberof JC.Utils
-   * @type {number}
-   */
-  DTR: Math.PI / 180,
-
-  /**
-   * 将弧度转化成角度的乘法因子
-   *
-   * @static
-   * @memberof JC.Utils
-   * @type {number}
-   */
-  RTD: 180 / Math.PI,
-
-  /**
-   * 判断变量是否为数组类型
+   * detect the variable is array type
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Array} variable 待判断的变量
-   * @return {Boolean} 判断的结果
+   * @param {Array} variable input variable
+   * @return {Boolean} result
    */
   isArray: function () {
     var ks = _rt([]);
@@ -164,30 +146,13 @@ var Utils = {
   }(),
 
   /**
-   * 判断变量是否为对象类型
+   * detect the variable is string type
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Object} variable 待判断的变量
-   * @return {Boolean} 判断的结果
-   */
-  isObject: function () {
-    var ks = _rt({});
-
-    return function (variable) {
-      return _rt(variable) === ks;
-    };
-  }(),
-
-  /**
-   * 判断变量是否为字符串类型
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {String} variable 待判断的变量
-   * @return {Boolean} 判断的结果
+   * @param {String} variable input variable
+   * @return {Boolean} result
    */
   isString: function () {
     var ks = _rt('s');
@@ -198,13 +163,13 @@ var Utils = {
   }(),
 
   /**
-   * 判断变量是否为数字类型
+   * detect the variable is number type
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Number} variable 待判断的变量
-   * @return {Boolean} 判断的结果
+   * @param {Number} variable input variable
+   * @return {Boolean} result
    */
   isNumber: function () {
     var ks = _rt(1);
@@ -215,92 +180,29 @@ var Utils = {
   }(),
 
   /**
-   * 判断变量是否为函数类型
+   * euclidean modulo
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Function} variable 待判断的变量
-   * @return {Boolean} 判断的结果
-   */
-  isFunction: function () {
-    var ks = _rt(function () {});
-
-    return function (variable) {
-      return _rt(variable) === ks;
-    };
-  }(),
-
-  /**
-   * 判断变量是否为undefined
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Function} variable 待判断的变量
-   * @return {Boolean} 判断的结果
-   */
-  isUndefined: function isUndefined(variable) {
-    return typeof variable === 'undefined';
-  },
-
-  /**
-   * 判断变量是否为布尔型
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Function} variable 待判断的变量
-   * @return {Boolean} 判断的结果
-   */
-  isBoolean: function () {
-    var ks = _rt(true);
-
-    return function (variable) {
-      return _rt(variable) === ks;
-    };
-  }(),
-
-  /**
-   * 强化的随机数，可以随机产生给定区间内的数字、随机输出数字内的项
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Array | Number} min 当只传入一个变量时变量应该为数字，否则为所给定区间较小的数字
-   * @param {Number} max 所给定区间较大的数字
-   * @return {ArrayItem | Number} 返回数组中大一项或者给定区间内的数字
-   */
-  random: function random(min, max) {
-    if (this.isArray(min)) return min[~~(Math.random() * min.length)];
-    if (!this.isNumber(max)) max = min || 1, min = 0;
-    return min + Math.random() * (max - min);
-  },
-
-  /**
-   * 阿基米德求模
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Number} n 当前值
-   * @param {Number} m 模
-   * @return {Number} 映射到模长内的值
+   * @param {Number} n input value
+   * @param {Number} m modulo
+   * @return {Number} re-map to modulo area
    */
   euclideanModulo: function euclideanModulo(n, m) {
     return (n % m + m) % m;
   },
 
   /**
-   * 边界值域镜像
+   * bounce value when value spill codomain
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Number} n 当前值
-   * @param {Number} min 值域下边界
-   * @param {Number} max 值域上边界
-   * @return {Number} 值域内反射到的值
+   * @param {Number} n input value
+   * @param {Number} min lower boundary
+   * @param {Number} max upper boundary
+   * @return {Number} bounce back to boundary area
    */
   codomainBounce: function codomainBounce(n, min, max) {
     if (n < min) return 2 * min - n;
@@ -309,72 +211,18 @@ var Utils = {
   },
 
   /**
-   * 数字区间闭合，避免超出区间
+   * clamp a value in range
    *
    * @static
    * @method
    * @memberof JC.Utils
-   * @param {Number} x 待闭合到值
-   * @param {Number} a 闭合区间左边界
-   * @param {Number} b 闭合区间右边界
-   * @return {Number} 闭合后的值
+   * @param {Number} x input value
+   * @param {Number} a lower boundary
+   * @param {Number} b upper boundary
+   * @return {Number} clamp in range
    */
   clamp: function clamp(x, a, b) {
     return x < a ? a : x > b ? b : x;
-  },
-
-  /**
-   * 线性插值
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Number} x 输入的值
-   * @param {Number} min 输入值的下区间
-   * @param {Number} max 输入值的上区间
-   * @return {Number} 返回的值在区间[0,1]内
-   */
-  linear: function linear(x, min, max) {
-    if (x <= min) return 0;
-    if (x >= max) return 1;
-    x = (x - min) / (max - min);
-    return x;
-  },
-
-  /**
-   * 平滑插值
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Number} x 输入的值
-   * @param {Number} min 输入值的下区间
-   * @param {Number} max 输入值的上区间
-   * @return {Number} 返回的值在区间[0,1]内
-   */
-  smoothstep: function smoothstep(x, min, max) {
-    if (x <= min) return 0;
-    if (x >= max) return 1;
-    x = (x - min) / (max - min);
-    return x * x * (3 - 2 * x);
-  },
-
-  /**
-   * 更平滑的插值
-   *
-   * @static
-   * @method
-   * @memberof JC.Utils
-   * @param {Number} x 输入的值
-   * @param {Number} min 输入值的下区间
-   * @param {Number} max 输入值的上区间
-   * @return {Number} 返回的值在区间[0,1]内
-   */
-  smootherstep: function smootherstep(x, min, max) {
-    if (x <= min) return 0;
-    if (x >= max) return 1;
-    x = (x - min) / (max - min);
-    return x * x * x * (x * (x * 6 - 15) + 10);
   }
 };
 
@@ -535,9 +383,8 @@ Curve.prototype = {
 };
 
 /**
- * 贝塞尔曲线类 note: 一般来说超过5阶的贝塞尔曲线并不是非常实用，你可以尝试 JC 的其他曲线类型
+ * bezier curve class
  * @class
- * @memberof JC
  * @param {Array}  points  array of points
  */
 
@@ -546,6 +393,12 @@ function BezierCurve(points) {
 }
 
 BezierCurve.prototype = Object.create(Curve.prototype);
+/**
+ * get point by progress t
+ * @param {number} t number of in [0, 1]
+ * @param {array} points some point
+ * @return {Point}
+ */
 
 BezierCurve.prototype.getPoint = function (t, points) {
   var a = points || this.points;
@@ -583,22 +436,22 @@ var float32ArraySupported = typeof Float32Array === 'function';
 /* eslint new-cap: 0 */
 
 /**
- * 公因式A
+ * common factor A
  *
- * @param {number} aA1 控制分量
- * @param {number} aA2 控制分量
- * @return {number} 整个公式中的A公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor A computed result
  */
 
 function A(aA1, aA2) {
   return 1.0 - 3.0 * aA2 + 3.0 * aA1;
 }
 /**
- * 公因式B
+ * common factor B
  *
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 整个公式中的B公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor B computed result
  */
 
 
@@ -606,11 +459,11 @@ function B(aA1, aA2) {
   return 3.0 * aA2 - 6.0 * aA1;
 }
 /**
- * 公因式C
+ * common factor C
  *
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 整个公式中的C公因式的值
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} common factor C computed result
  */
 
 
@@ -618,12 +471,12 @@ function C(aA1) {
   return 3.0 * aA1;
 }
 /**
- * 获取aT处的值
+ * get value when t at aT
  *
- * @param {number} aT 三次贝塞尔曲线的t自变量
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 三次贝塞尔公式的因变量
+ * @param {number} aT progress t
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} bezier curve computed result
  */
 
 
@@ -631,11 +484,12 @@ function calcBezier(aT, aA1, aA2) {
   return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
 }
 /**
- * 获取aT处的斜率
- * @param {number} aT 三次贝塞尔曲线的t自变量
- * @param {number} aA1 控制分量1
- * @param {number} aA2 控制分量2
- * @return {number} 三次贝塞尔公式的导数
+ * get slope value when t at aT
+ *
+ * @param {number} aT progress t
+ * @param {number} aA1 control point 1
+ * @param {number} aA2 control point 2
+ * @return {number} bezier curve's slope computed result
  */
 
 
@@ -649,7 +503,7 @@ function getSlope(aT, aA1, aA2) {
  * @param {number} aB
  * @param {number} mX1
  * @param {number} mX2
- * @return {number} 二分法猜测t的值
+ * @return {number} binary-subdivide search
  */
 
 
@@ -672,12 +526,12 @@ function binarySubdivide(aX, aA, aB, mX1, mX2) {
   return currentT;
 }
 /**
- * 牛顿迭代算法，进一步的获取精确的T值
+ * Newton-Raphson iterate to estimate value faster
  * @param {number} aX
  * @param {number} aGuessT
  * @param {number} mX1
  * @param {number} mX2
- * @return {number} 获取更精确的T值
+ * @return {number} estimate value
  */
 
 
@@ -696,14 +550,14 @@ function newtonRaphsonIterate(aX, aGuessT, mX1, mX2) {
   return aGuessT;
 }
 /**
- * cubic-bezier曲线的两个控制点，默认起始点为 0，结束点为 1
+ * use cubic-bezier get bezier-easing, when start p0(0, 0) and end p3(1, 1)
  *
  * @class
  * @memberof JC
- * @param {number} mX1 控制点1的x分量
- * @param {number} mY1 控制点1的y分量
- * @param {number} mX2 控制点2的x分量
- * @param {number} mY2 控制点2的y分量
+ * @param {number} mX1 control p1 component-x
+ * @param {number} mY1 control p1 component-y
+ * @param {number} mX2 control p2 component-x
+ * @param {number} mY2 control p3 component-y
  */
 
 
@@ -754,10 +608,10 @@ BezierEasing.prototype._getTForX = function (aX) {
   }
 };
 /**
- * 通过x轴近似获取y的值
+ * get the y value from give x
  *
- * @param {number} x x轴的偏移量
- * @return {number} y 与输入值x对应的y值
+ * @param {number} x the x value
+ * @return {number} y estimate y value
  */
 
 
@@ -777,12 +631,12 @@ BezierEasing.prototype.get = function (x) {
 
 var bezierPool = {};
 /**
- * 准备好贝塞尔曲线
- * @param {number} mX1 控制点1的x分量
- * @param {number} mY1 控制点1的y分量
- * @param {number} mX2 控制点2的x分量
- * @param {number} mY2 控制点2的y分量
- * @param {string} nm 控制点命名
+ * create a bezier curve by control point, and push it to cache
+ * @param {number} mX1 control p1 component-x
+ * @param {number} mY1 control p1 component-y
+ * @param {number} mX2 control p2 component-x
+ * @param {number} mY2 control p3 component-y
+ * @param {string} nm curve name
  * @return {BezierEasing}
  */
 
@@ -797,11 +651,11 @@ function prepareEaseing(mX1, mY1, mX2, mY2, nm) {
   bezierPool[str] = bezEasing;
 }
 /**
- * 根据进度获取到普通插值
- * @param {number} s  插值起始端点
- * @param {number} e  插值结束端点
- * @param {array}  nm 贝塞尔曲线的名字
- * @param {number} p  插值进度
+ * get easeing value by curve name and progress
+ * @param {number} s  lerp begin value
+ * @param {number} e  lerp end value
+ * @param {array}  nm curve name
+ * @param {number} p  progress
  * @return {array}
  */
 
@@ -1026,6 +880,7 @@ function () {
     this.repeatsCut = this.repeats;
     this.delayCut = this.delay;
     this.waitCut = this.wait;
+    this.paused = false;
     this.group = new Container();
     this.parserComposition(this.group, this.keyframes.layers);
   }
@@ -1109,6 +964,7 @@ function () {
       for (var i = layersData.length - 1; i >= 0; i--) {
         var layer = layersData[i];
         var item = layersMap[layer.ind];
+        if (!item) continue;
 
         if (layer.parent) {
           var parent = layersMap[layer.parent];
@@ -1286,6 +1142,38 @@ function () {
         }
       }
     }
+    /**
+     * set animation speed, time scale
+     * @param {number} speed
+     */
+
+  }, {
+    key: "setSpeed",
+    value: function setSpeed(speed) {
+      this.timeScale = speed;
+    }
+    /**
+     * pause this animation group
+     * @return {this}
+     */
+
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.paused = true;
+      return this;
+    }
+    /**
+     * pause this animation group
+     * @return {this}
+     */
+
+  }, {
+    key: "resume",
+    value: function resume() {
+      this.paused = false;
+      return this;
+    }
   }]);
 
   return AnimationGroup;
@@ -1293,6 +1181,15 @@ function () {
 
 /**
  * all animation manager, manage ticker and animation groups
+   * @example
+   * ```js
+   * var manager = new PIXI.AnimationManager(app.ticker);
+   * var ani = manager.parserAnimation({
+   *   keyframes: data,
+   *   infinite: true,
+   * });
+   * ```
+ * @class
  */
 
 var AnimationManager =
@@ -1324,17 +1221,25 @@ function () {
      * time scale, just like speed scalar
      *
      * @member {Number}
-     * @private
      */
 
     this.timeScale = 1;
     /**
+     * mark the manager was pause or not
+     *
+     * @member {Boolean}
+     */
+
+    this.paused = false;
+    /**
      * ticker engine
+     * @private
      */
 
     this.ticker = _ticker || new ticker.Ticker();
     /**
      * all animation groups
+     * @private
      */
 
     this.groups = [];
@@ -1367,6 +1272,14 @@ function () {
     /**
      * parser a bodymovin data, and post some config for this animation group
      * @param {object} options bodymovin data
+     * @param {Object} options.keyframes bodymovin data, which export from AE
+     * @param {Number} [options.repeats=0] need repeat somt times?
+     * @param {Boolean} [options.infinite=false] play this animation round and round forever
+     * @param {Boolean} [options.alternate=false] alternate direction every round
+     * @param {Number} [options.wait=0] need wait how much time to start
+     * @param {Number} [options.delay=0] need delay how much time to begin, effect every round
+     * @param {String} [options.prefix=''] assets url prefix, like link path
+     * @param {Number} [options.timeScale=1] animation speed
      * @return {AnimationGroup}
      * @example
      * ```js
@@ -1385,7 +1298,18 @@ function () {
       return this.add(animate);
     }
     /**
-     * a
+     * set animation speed, time scale
+     * @param {number} speed
+     */
+
+  }, {
+    key: "setSpeed",
+    value: function setSpeed(speed) {
+      this.timeScale = speed;
+    }
+    /**
+     * start update loop
+     * @return {this}
      */
 
   }, {
@@ -1393,24 +1317,51 @@ function () {
     value: function start() {
       this.pt = Date.now();
       this.ticker.add(this.update);
+      return this;
     }
     /**
-     * a
+     * stop update loop
+     * @return {this}
      */
 
   }, {
     key: "stop",
     value: function stop() {
       this.ticker.remove(this.update);
+      return this;
+    }
+    /**
+     * pause all animation groups
+     * @return {this}
+     */
+
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.paused = true;
+      return this;
+    }
+    /**
+     * pause all animation groups
+     * @return {this}
+     */
+
+  }, {
+    key: "resume",
+    value: function resume() {
+      this.paused = false;
+      return this;
     }
     /**
      * update
+     * @private
      */
 
   }, {
     key: "update",
     value: function update() {
       this.timeline();
+      if (this.paused) return;
       var snippetCache = this.timeScale * this.snippet;
       var length = this.groups.length;
 
