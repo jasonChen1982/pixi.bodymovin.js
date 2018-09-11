@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  <title>JC_demo</title>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+    }
+
+  </style>
+</head>
+
+<body>
+  <script type="text/javascript" src="../libs/pixi.js/dist/pixi.min.js"></script>
+  <script type="text/javascript" src="../../build/index.js"></script>
+  <script type="text/javascript" src="./js/data.js"></script>
+  <script type="text/javascript">
+    var app = new PIXI.Application(data.w, data.h, {backgroundColor : 0xffffff});
+    document.body.appendChild(app.view);
+
+    var manager = new PIXI.AnimationManager(app.ticker);
+
+    var ani = manager.parserAnimation({
+      keyframes: data,
+      prefix: '',
+      infinite: true,
+    });
+
+    app.stage.addChild(ani.group);
+
+  </script>
+</body>
+
+</html>
